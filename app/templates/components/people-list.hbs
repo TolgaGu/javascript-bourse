@@ -3,7 +3,7 @@
 <ul>
   {{#each @people as |person|}}
     <li>
-      <button {{on 'click' (fn this.showPerson person)}}>{{person}}</button>
+      <button type="button" {{on 'click' (fn this.showPerson person)}}>{{person}}</button>
     </li>
   {{/each}}
 </ul>
