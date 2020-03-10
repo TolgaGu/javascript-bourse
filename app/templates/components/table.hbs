@@ -1,0 +1,22 @@
+<br><br><br><br><br><br>
+<p style="left: 30%">uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+</p>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+
+<script>
+  /*
+  fetch('http://localhost:3000/weshalors').then(function(data) {
+    return data;
+  }).then(function (response) {
+    console.log(response)
+  });*/
+  $.ajax({
+    url: "http://localhost:3000/weshalors",
+    success: function (result) {
+      console.log(result);
+    }
+  });
+</script>
+{{yield}}
