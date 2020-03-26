@@ -15,6 +15,15 @@ let StockSchema = new mongoose.Schema({
   price: Number
 });
 
+// burda kaldim
+let Personne = new mongoose.Schema({
+  name : String,
+  solde : Number,
+  nbaction : Number,
+  depense : Number,
+  revenu : Number
+});
+
 let Stock = mongoose.model('Stock', StockSchema);
 /*let s = new Stock({
    name : "Apple",
