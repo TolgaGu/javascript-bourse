@@ -1,22 +1,101 @@
 <br><br><br><br><br><br>
-<p style="left: 30%">uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
 
-</p>
+<div style="left: 300px; position: absolute">
+  <table id="datatable" class="display">
+  </table>
 
+  <div id="container-pricing">
+
+  </div>
+
+</div>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
 
 <script>
-  /*
-  fetch('http://localhost:3000/weshalors').then(function(data) {
-    return data;
-  }).then(function (response) {
-    console.log(response)
-  });*/
+
+  let html = " <thead>\n" +
+          "    <tr>\n" +
+          "      <th>id</th>\n" +
+          "      <th>symbol</th>\n" +
+          "      <th>exchange</th>\n" +
+          "      <th>status</th>\n" +
+          "\n" +
+          "    </tr>\n" +
+          "    </thead>";
   $.ajax({
-    url: "http://localhost:3000/weshalors",
+    url: "http://localhost:3000/alpaca",
     success: function (result) {
-      console.log(result);
+      result.forEach(element => {
+        html += "<tr onclick='getPricing(\"" + element.symbol + "\")'>";
+        html += "<td>" + element.id + "</td>" + "<td>" + element.symbol + "</td>" + "<td>" + element.exchange + "</td>" + "<td>" + element.status + "</td>";
+        html += "</tr>";
+      });
+      $("#datatable").append(html);
+      $("#datatable").DataTable();
     }
   });
+
+  function getPricing(symbol) {
+
+    $.ajax({
+      url: "http://localhost:3000/alpaca/" + symbol,
+      success: function (result) {
+        let date;
+        let openprice=[];
+        let highPrice=[];
+        let lowprice=[];
+        let closeprice=[];
+        for (let i = result[symbol].length - 1; i > result[symbol].length - 21; i--) {
+
+          openprice.push({X:result[symbol][i].t,Y:result[symbol][i].o});
+          highPrice.push({X:result[symbol][i].t,Y:result[symbol][i].h});
+          lowprice.push({X:result[symbol][i].t,Y:result[symbol][i].l});
+          closeprice.push({X:result[symbol][i].t,Y:result[symbol][i].c});
+
+          var graphdata1 = {
+            linecolor: "#CCA300",
+            title: "Openprice",
+            values: openprice
+          };
+
+          var graphdata2 = {
+            linecolor: "#00CC66",
+            title: "Highprice",
+            values: highPrice
+          };
+          var graphdata3 = {
+            linecolor: "#FF99CC",
+            title: "Lowprice",
+            values: lowprice
+          };
+          var graphdata4 = {
+            linecolor: "#1055AA",
+            title: "Closeprice",
+            values: closeprice
+          };
+        }
+
+
+        $("#container-pricing").empty();
+        $("#container-pricing").append('<div id="Pricing"></div>');
+        $("#Pricing").SimpleChart({
+          ChartType: "Line",
+          toolwidth: "50",
+          toolheight: "25",
+          axiscolor: "#E6E6E6",
+          textcolor: "#6E6E6E",
+          showlegends: false,
+          data: [graphdata4, graphdata3, graphdata2, graphdata1],
+          legendsize: "140",
+          legendposition: 'bottom',
+          xaxislabel: 'Hours',
+          title: 'Weekly Profit',
+          yaxislabel: 'Profit in $'
+        });
+      }
+    });
+
+  }
+
 </script>
 {{yield}}
