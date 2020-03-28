@@ -36,46 +36,6 @@
 
 
 
-  function acheterAction(symbol,price) {
-    console.log(symbol+" : "+price);
-
-    var settings = {
-      "url": "http://localhost:3000/stocks",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({"name":"","symbol":symbol,"price":price}),
-    };
-
-    personne.solde-=price;
-    personne.depense+=price;
-
-    var settingsPersonne = {
-      "url": "http://localhost:3000/personnes",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify(personne),
-    };
-
-    $.ajax(settings).done(function (response) {
-
-      $.ajax(settingsPersonne).done(function (response) {
-
-        console.log("ok");
-        console.log(response);
-
-        setPersonne();
-        setStocks();
-        setPortofolio();
-      });
-
-    });
-  }
 
 </script>
 {{yield}}

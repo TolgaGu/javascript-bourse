@@ -154,6 +154,15 @@ app.route('/stocks')
       }
       response.json(request.body);
     })
+  })
+  .delete((request, response, next) => {
+    Stock.deleteOne({"_id":request.body._id}, (err, stocks) => {
+      if (err) {
+        return next(err);
+      }
+
+      response.json(stocks);
+    })
   });
 // find my symbol dans la bdd
 app.get('/stocks/:stockSymbol', (request, response, next) => {

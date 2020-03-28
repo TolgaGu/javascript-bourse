@@ -21,7 +21,7 @@
             "    </thead>";
 
     for (let i = 0;i<listStock.length;i++){
-      actions+="<tr onclick='getPricing(\"" + listStock[i].symbol + "\")''><td>"+listStock[i]._id+"</td>"+"<td>"+listStock[i].symbol+"</td>"+"<td>$"+listStock[i].price+"</td>"+
+      actions+="<tr onclick='getPricing(\"" + listStock[i].symbol + "\",true,\""+listStock[i]._id+"\","+listStock[i].price+")'><td>"+listStock[i]._id+"</td>"+"<td>"+listStock[i].symbol+"</td>"+"<td>$"+listStock[i].price+"</td>"+
               "<td><button onclick=\"sellAction()\">Sell</button></td></tr>"
     }
     document.getElementById("my-actions-datatable").innerHTML=actions;

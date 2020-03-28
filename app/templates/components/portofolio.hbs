@@ -66,7 +66,8 @@
   setPortofolio();
   //console.log(personne);
 
-  function getPricing(symbol) {
+  function getPricing(symbol,forselling =false,idaction="",prixdachat=0) {
+
 
     $.ajax({
       url: "http://localhost:3000/alpaca/" + symbol,
@@ -127,8 +128,21 @@
 
 
         $("#container-pricing").empty();
-        $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span> <button onclick="acheterAction(\''+symbol+'\','+
-                lastprice.c+')">Acheter</button><div id="Pricing"></div>');
+        if(forselling){
+
+          console.log("forsell");
+          console.log(lastprice);
+          $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span>'+
+                  ' <button onclick="acheterOuVendreAction(\''+symbol+'\','+lastprice.h+',true,\''+idaction+'\','+prixdachat+')">'+
+                  'Vendre</button><div id="Pricing"></div>');
+          $("#price").append(lastprice.h+"$");
+        }else{
+
+          $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span>'+
+                  ' <button onclick="acheterOuVendreAction(\''+symbol+'\','+lastprice.c+')">'+
+                  'Acheter</button><div id="Pricing"></div>');
+          $("#price").append(lastprice.c+"$");
+        }
         $("#container-pricing").append('<div id="pricingdata"><table id="tablepricingdata"></table></div>');
         $("#Pricing").SimpleChart({
           ChartType: "Line",
@@ -147,11 +161,69 @@
 
 
         $("#tablepricingdata").append(html2);
-        $("#price").append(lastprice.c+"$");
         $("#tablepricingdata").DataTable();
       }
     });
 
+
+  }
+
+  function acheterOuVendreAction(symbol, price, sell=false,idaction="",prixdachat=0) {
+
+
+    if(!sell){
+      var settings = {
+        "url": "http://localhost:3000/stocks",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({"name":"","symbol":symbol,"price":price}),
+      };
+
+      personne.solde-=price;
+      personne.depense+=price;
+    }else{
+      var settings = {
+        "url": "http://localhost:3000/stocks",
+        "method": "DELETE",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({"_id":idaction}),
+      };
+
+      personne.solde+=price;
+      personne.revenu+=price-prixdachat;
+      personne.nbactionvendu++;
+    }
+
+
+    var settingsPersonne = {
+      "url": "http://localhost:3000/personnes",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify(personne),
+    };
+
+    $.ajax(settings).done(function (response) {
+
+      $.ajax(settingsPersonne).done(function (response) {
+
+        console.log("ok");
+        console.log(response);
+
+        setPersonne();
+        setStocks();
+        setPortofolio();
+      });
+
+    });
   }
 </script>
 {{yield}}
