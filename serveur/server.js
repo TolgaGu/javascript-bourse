@@ -15,15 +15,31 @@ let StockSchema = new mongoose.Schema({
   price: Number
 });
 
-// burda kaldim
-let Personne = new mongoose.Schema({
+
+let PersonneSchema = new mongoose.Schema({
   name : String,
   solde : Number,
-  nbaction : Number,
+  nbactionpossede : Number,
+  nbactionvendu : Number,
   depense : Number,
   revenu : Number
 });
 
+// eslint-disable-next-line no-unused-vars
+let Personne = mongoose.model('Personne',PersonneSchema);
+
+
+/*
+let p = new Personne({
+  name: "Kebab",
+  solde : 10000,
+  nbactionpossede : 0,
+  nbactionvendu : 0,
+  depense : 0,
+  revenu : 0
+});
+p.save();
+*/
 let Stock = mongoose.model('Stock', StockSchema);
 /*let s = new Stock({
    name : "Apple",
@@ -131,7 +147,6 @@ app.route('/stocks')
     })
   })
   .post((request, response, next) => {
-    console.log(request.body);
     let stock = new Stock(request.body);
     stock.save((err) => {
       if (err) {
@@ -151,6 +166,25 @@ app.get('/stocks/:stockSymbol', (request, response, next) => {
   })
 });
 
+app.route('/personnes')
+  .get((request, response, next) => {
+    Personne.find({}, (err, stocks) => {
+      if (err) {
+        return next(err);
+      }
+
+      response.json(stocks);
+    })
+  })
+  .post((request, response, next) => {
+    let personne = new Personne(request.body);
+    personne.save((err) => {
+      if (err) {
+        return next(err)
+      }
+      response.json(personne);
+    })
+  });
 
 app.use(express.static("./public"));
 

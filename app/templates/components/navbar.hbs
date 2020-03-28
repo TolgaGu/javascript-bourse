@@ -8,99 +8,12 @@
       <ul class="nofitications-dropdown">
         <li class="dropdown head-dpdn">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                  class="fa fa-envelope"></i><span class="badge">4</span></a>
-          <ul class="dropdown-menu">
-            <li>
-              <div class="notification_header">
-                <h3>You have 3 new messages</h3>
-              </div>
-            </li>
-            <li><a href="#">
-              <div class="user_img"><img src="assets/images/1.jpg" alt="frzf"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet</p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li class="odd"><a href="#">
-              <div class="user_img"><img src="assets/images/4.jpg" alt="ferzfr"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet </p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li><a href="#">
-              <div class="user_img"><img src="assets/images/3.jpg" alt="fregersg"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet </p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li><a href="#">
-              <div class="user_img"><img src="assets/images/2.jpg" alt="ghthz"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet </p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li>
-              <div class="notification_bottom">
-                <a href="#">See all messages</a>
-              </div>
-            </li>
-          </ul>
+                  class="fa fa-envelope"></i><span class="badge">1</span></a>
         </li>
         <li class="dropdown head-dpdn">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
                   class="fa fa-bell"></i><span class="badge blue">4</span></a>
-          <ul class="dropdown-menu">
-            <li>
-              <div class="notification_header">
-                <h3>You have 3 new notification</h3>
-              </div>
-            </li>
-            <li><a href="#">
-              <div class="user_img"><img src="assets/images/4.jpg" alt="getgsg"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet</p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li class="odd"><a href="#">
-              <div class="user_img"><img src="assets/images/1.jpg" alt="sghtr"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet </p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li><a href="#">
-              <div class="user_img"><img src="assets/images/3.jpg" alt="grh"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet </p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li><a href="#">
-              <div class="user_img"><img src="assets/images/2.jpg" alt="trhshsd"></div>
-              <div class="notification_desc">
-                <p>Lorem ipsum dolor amet </p>
-                <p><span>1 hour ago</span></p>
-              </div>
-              <div class="clearfix"></div>
-            </a></li>
-            <li>
-              <div class="notification_bottom">
-                <a href="#">See all notifications</a>
-              </div>
-            </li>
-          </ul>
+
         </li>
       </ul>
       <div class="clearfix"></div>
@@ -115,9 +28,9 @@
         <li class="dropdown profile_details_drop">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <div class="profile_img">
-              <span class="prfil-img"><img src="assets/images/2.jpg" alt="frzf"> </span>
+              <span class="prfil-img"><img src="assets/images/3.jpg" alt="user"> </span>
               <div class="user-name">
-                <p>Admin Name</p>
+                <p id="personename"></p>
                 <span>Administrator</span>
               </div>
               <i class="fa fa-angle-down lnr"></i>
@@ -125,12 +38,6 @@
               <div class="clearfix"></div>
             </div>
           </a>
-          <ul class="dropdown-menu drp-mnu">
-            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-            <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
-            <li><a href="#"><i class="fa fa-suitcase"></i> Profile</a></li>
-            <li><a href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
-          </ul>
         </li>
       </ul>
     </div>
@@ -139,4 +46,49 @@
   <div class="clearfix"></div>
 </div>
 
+<script>
+  let personne = function(){
+    return {
+      name: "",
+      solde : -1,
+      nbactionpossede : -1,
+      nbactionvendu : -1,
+      depense : -1,
+      revenu : -1
+    }
+  }();
+
+  let stocks = function(name,symbol,price){
+    this.name=name;
+    this.symbol=symbol;
+    this.price=price;
+  };
+
+  let listStock = [];
+
+  $.ajax({
+    url: "http://localhost:3000/stocks",
+    async: false,
+    success: function (result) {
+
+      listStock=result;
+
+    }
+  });
+
+  $.ajax({
+    url: "http://localhost:3000/personnes",
+    async: false,
+    success: function (result) {
+      personne.name = result[result.length-1].name;
+      personne.solde = result[result.length-1].solde;
+      personne.nbactionpossede = result[result.length-1].nbactionpossede;
+      personne.nbactionvendu = result[result.length-1].nbactionvendu;
+      personne.depense = result[result.length-1].depense;
+      personne.revenu = result[result.length-1].revenu;
+
+    }
+  });
+  document.getElementById("personename").innerText=personne.name
+</script>
 {{yield}}
