@@ -1,0 +1,33 @@
+<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+  <!--left-fixed -navigation-->
+  <aside class="sidebar-left">
+    <nav class="navbar navbar-inverse">
+      <div class="navbar-header">
+        <h1>
+          {{#link-to "index"}}
+            <span class="navbar-brand"><span class="fa fa-area-chart"></span> Stock<span
+                    class="dashboard_text">Option</span></span>
+          {{/link-to}}</h1>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="sidebar-menu">
+          <li class="header">MAIN NAVIGATION</li>
+          <li class="treeview">
+            {{#link-to "index"}}
+              <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            {{/link-to}}
+          </li>
+          <li class="treeview">
+            {{#link-to "my-actions"}}
+              <i class="fa fa-laptop"></i>
+              <span>My actions</span>
+            {{/link-to}}
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+  </aside>
+</div>
+
+{{yield}}

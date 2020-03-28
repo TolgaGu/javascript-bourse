@@ -1,0 +1,229 @@
+<div id="page-wrapper">
+  <div class="col_3">
+    <div class="col-md-3 widget widget1">
+      <div class="r3_counter_box">
+        <i class="pull-left fa fa-dollar icon-rounded"></i>
+        <div class="stats">
+          <h5 id="personneactionsvendu"><strong></strong></h5>
+          <span>Actions vendu</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 widget widget1">
+      <div class="r3_counter_box">
+        <i class="pull-left fa fa-laptop user1 icon-rounded"></i>
+        <div class="stats">
+          <h5 id="personnerevenue"><strong></strong></h5>
+          <span>Revenue</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 widget widget1">
+      <div class="r3_counter_box">
+        <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
+        <div class="stats">
+          <h5 id="personnedepense"><strong></strong></h5>
+          <span>Dépense</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 widget widget1">
+      <div class="r3_counter_box">
+        <i class="pull-left fa fa-money user2 icon-rounded"></i>
+        <div class="stats">
+          <h5 id="personnesolde"><strong></strong></h5>
+          <span>Solde</span>
+        </div>
+      </div>
+    </div>
+{{#link-to "my-actions"}}
+      <div class="col-md-3 widget">
+        <div class="r3_counter_box">
+          <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
+          <div class="stats">
+            <h5 id="personneactions"><strong></strong></h5>
+            <span>Actions</span>
+          </div>
+        </div>
+      </div>
+  {{/link-to}}
+
+    <div class="clearfix"></div>
+  </div>
+</div>
+
+<script>
+
+
+  function setPortofolio() {
+
+    document.getElementById("personneactions").innerText = listStock.length;
+    document.getElementById("personnesolde").innerText = "$" + personne.solde;
+    document.getElementById("personnerevenue").innerText = "$" + personne.revenu;
+    document.getElementById("personneactionsvendu").innerText = personne.nbactionvendu;
+    document.getElementById("personnedepense").innerText = "$" + personne.depense;
+  }
+  setPortofolio();
+  //console.log(personne);
+
+  function getPricing(symbol,forselling =false,idaction="",prixdachat=0) {
+
+
+    $.ajax({
+      url: "http://localhost:3000/alpaca/" + symbol,
+      success: function (result) {
+        let lastprice = result[symbol][result[symbol].length-1];
+        let date;
+        let openprice = [];
+        let highPrice = [];
+        let lowprice = [];
+        let closeprice = [];
+        let x = -29;
+
+        let html2 = " <thead>\n" +
+                "    <tr>\n" +
+                "      <th>Time</th>\n" +
+                "      <th>Open price</th>\n" +
+                "      <th>High price</th>\n" +
+                "      <th>low price</th>\n" +
+                "      <th>Close price</th>\n" +
+                "    </tr>\n" +
+                "    </thead>";
+        for (let i = result[symbol].length - 1; i > result[symbol].length - 31; i--) {
+          date = new Date(result[symbol][i].t*1000);
+
+          date = date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate();
+
+          openprice.push({X: date, Y: result[symbol][i].o});
+          highPrice.push({X: date, Y: result[symbol][i].h});
+          lowprice.push({X: date, Y: result[symbol][i].l});
+          closeprice.push({X: date, Y: result[symbol][i].c});
+
+          html2 += "<tr><td>" + date + "</td>" + "<td>" + result[symbol][i].o + "</td>"
+                  + "<td>" + result[symbol][i].h + "</td>" + "<td>" + result[symbol][i].l + "</td>"+
+                  "<td>" + result[symbol][i].c + "</td></tr>";
+          x++;
+          var graphdata1 = {
+            linecolor: "#CCA300",
+            title: "Openprice",
+            values: openprice
+          };
+
+          var graphdata2 = {
+            linecolor: "#00CC66",
+            title: "Highprice",
+            values: highPrice
+          };
+          var graphdata3 = {
+            linecolor: "#FF99CC",
+            title: "Lowprice",
+            values: lowprice
+          };
+          var graphdata4 = {
+            linecolor: "#1055AA",
+            title: "Closeprice",
+            values: closeprice
+          };
+        }
+
+
+        $("#container-pricing").empty();
+        if(forselling){
+
+          console.log("forsell");
+          console.log(lastprice);
+          $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span>'+
+                  ' <button onclick="acheterOuVendreAction(\''+symbol+'\','+lastprice.h+',true,\''+idaction+'\','+prixdachat+')">'+
+                  'Vendre</button><div id="Pricing"></div>');
+          $("#price").append(lastprice.h+"$");
+        }else{
+
+          $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span>'+
+                  ' <button onclick="acheterOuVendreAction(\''+symbol+'\','+lastprice.c+')">'+
+                  'Acheter</button><div id="Pricing"></div>');
+          $("#price").append(lastprice.c+"$");
+        }
+        $("#container-pricing").append('<div id="pricingdata"><table id="tablepricingdata"></table></div>');
+        $("#Pricing").SimpleChart({
+          ChartType: "Line",
+          toolwidth: "50",
+          toolheight: "25",
+          axiscolor: "#E6E6E6",
+          textcolor: "#6E6E6E",
+          showlegends: false,
+          data: [graphdata4, graphdata3, graphdata2, graphdata1],
+          legendsize: "140",
+          legendposition: 'bottom',
+          xaxislabel: 'Day',
+          title: 'Evolution of price of ' +symbol,
+          yaxislabel: 'Pricing'
+        });
+
+
+        $("#tablepricingdata").append(html2);
+        $("#tablepricingdata").DataTable();
+      }
+    });
+
+
+  }
+
+  function acheterOuVendreAction(symbol, price, sell=false,idaction="",prixdachat=0) {
+
+
+    if(!sell){
+      var settings = {
+        "url": "http://localhost:3000/stocks",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({"name":"","symbol":symbol,"price":price}),
+      };
+
+      personne.solde-=price;
+      personne.depense+=price;
+    }else{
+      var settings = {
+        "url": "http://localhost:3000/stocks",
+        "method": "DELETE",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({"_id":idaction}),
+      };
+
+      personne.solde+=price;
+      personne.revenu+=price-prixdachat;
+      personne.nbactionvendu++;
+    }
+
+
+    var settingsPersonne = {
+      "url": "http://localhost:3000/personnes",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify(personne),
+    };
+
+    $.ajax(settings).done(function (response) {
+
+      $.ajax(settingsPersonne).done(function (response) {
+
+        console.log("ok");
+        console.log(response);
+
+        setPersonne();
+        setStocks();
+        setPortofolio();
+      });
+
+    });
+  }
+</script>
+{{yield}}

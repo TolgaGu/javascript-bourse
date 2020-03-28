@@ -1,0 +1,99 @@
+<div class="sticky-header header-section ">
+  <div class="header-left">
+    {{!--toggle button start--}}
+    <button id="showLeftPush" type="button"><i class="fa fa-bars"></i></button>
+    {{!--toggle button end--}}
+    <div class="profile_details_left">
+      {{!--notifications of menu start --}}
+      <ul class="nofitications-dropdown">
+        <li class="dropdown head-dpdn">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                  class="fa fa-envelope"></i><span class="badge">1</span></a>
+        </li>
+        <li class="dropdown head-dpdn">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                  class="fa fa-bell"></i><span class="badge blue">4</span></a>
+
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    {{!--notification menu end --}}
+    <div class="clearfix"></div>
+  </div>
+  <div class="header-right">
+
+    <div class="profile_details">
+      <ul>
+        <li class="dropdown profile_details_drop">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <div class="profile_img">
+              <span class="prfil-img"><img src="assets/images/3.jpg" alt="user"> </span>
+              <div class="user-name">
+                <p id="personename"></p>
+                <span>Administrator</span>
+              </div>
+              <i class="fa fa-angle-down lnr"></i>
+              <i class="fa fa-angle-up lnr"></i>
+              <div class="clearfix"></div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+<script>
+
+  let personne = function(){
+    return {
+      name: "",
+      solde : -1,
+      nbactionpossede : -1,
+      nbactionvendu : -1,
+      depense : -1,
+      revenu : -1
+    }
+  }();
+
+
+  let listStock = [];
+
+  function setStocks(){
+    $.ajax({
+      url: "http://localhost:3000/stocks",
+      async: false,
+      success: function (result) {
+
+        listStock=result;
+
+      }
+    });
+  }
+
+
+  function setPersonne(){
+    $.ajax({
+      url: "http://localhost:3000/personnes",
+      async: false,
+      success: function (result) {
+        personne.name = result[result.length-1].name;
+        personne.solde = result[result.length-1].solde;
+        personne.nbactionpossede = result[result.length-1].nbactionpossede;
+        personne.nbactionvendu = result[result.length-1].nbactionvendu;
+        personne.depense = result[result.length-1].depense;
+        personne.revenu = result[result.length-1].revenu;
+
+      }
+    });
+  }
+
+  setStocks();
+  setPersonne();
+
+  document.getElementById("personename").innerText=personne.name
+</script>
+{{yield}}

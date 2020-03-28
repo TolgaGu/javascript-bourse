@@ -1,0 +1,41 @@
+<br><br><br><br><br><br>
+
+<div style="left: 300px; width:70%; position: absolute">
+  <table id="datatable" class="display">
+  </table>
+
+  <div id="container-pricing">
+  </div>
+
+</div>
+
+<script>
+
+
+  $.ajax({
+    url: "http://localhost:3000/alpaca",
+    success: function (result) {
+      let html = " <thead>\n" +
+              "    <tr>\n" +
+              "      <th>id</th>\n" +
+              "      <th>symbol</th>\n" +
+              "      <th>exchange</th>\n" +
+              "      <th>status</th>\n" +
+              "\n" +
+              "    </tr>\n" +
+              "    </thead>";
+      result.forEach(element => {
+        html += "<tr onclick='getPricing(\"" + element.symbol + "\")'>";
+        html += "<td>" + element.id + "</td>" + "<td>" + element.symbol + "</td>" + "<td>" + element.exchange + "</td>" + "<td>" + element.status + "</td>";
+        html += "</tr>";
+      });
+      $("#datatable").append(html);
+      $("#datatable").DataTable();
+    }
+  });
+
+
+
+
+</script>
+{{yield}}
