@@ -5,26 +5,25 @@
   </table>
 
   <div id="container-pricing">
-
   </div>
 
 </div>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
 
 <script>
 
-  let html = " <thead>\n" +
-          "    <tr>\n" +
-          "      <th>id</th>\n" +
-          "      <th>symbol</th>\n" +
-          "      <th>exchange</th>\n" +
-          "      <th>status</th>\n" +
-          "\n" +
-          "    </tr>\n" +
-          "    </thead>";
+
   $.ajax({
     url: "http://localhost:3000/alpaca",
     success: function (result) {
+      let html = " <thead>\n" +
+              "    <tr>\n" +
+              "      <th>id</th>\n" +
+              "      <th>symbol</th>\n" +
+              "      <th>exchange</th>\n" +
+              "      <th>status</th>\n" +
+              "\n" +
+              "    </tr>\n" +
+              "    </thead>";
       result.forEach(element => {
         html += "<tr onclick='getPricing(\"" + element.symbol + "\")'>";
         html += "<td>" + element.id + "</td>" + "<td>" + element.symbol + "</td>" + "<td>" + element.exchange + "</td>" + "<td>" + element.status + "</td>";
@@ -35,96 +34,47 @@
     }
   });
 
-  function getPricing(symbol) {
 
-    $.ajax({
-      url: "http://localhost:3000/alpaca/" + symbol,
-      success: function (result) {
-        let lastprice = result[symbol][result[symbol].length-1];
-        let date;
-        let openprice = [];
-        let highPrice = [];
-        let lowprice = [];
-        let closeprice = [];
-        let x = -29;
-
-        let html = " <thead>\n" +
-                "    <tr>\n" +
-                "      <th>Time</th>\n" +
-                "      <th>Open price</th>\n" +
-                "      <th>High price</th>\n" +
-                "      <th>low price</th>\n" +
-                "      <th>Close price</th>\n" +
-                "    </tr>\n" +
-                "    </thead>";
-        for (let i = result[symbol].length - 1; i > result[symbol].length - 31; i--) {
-          date = new Date(result[symbol][i].t*1000);
-
-          date = date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate();
-
-          openprice.push({X: date, Y: result[symbol][i].o});
-          highPrice.push({X: date, Y: result[symbol][i].h});
-          lowprice.push({X: date, Y: result[symbol][i].l});
-          closeprice.push({X: date, Y: result[symbol][i].c});
-
-          html += "<tr><td>" + date + "</td>" + "<td>" + result[symbol][i].o + "</td>"
-                  + "<td>" + result[symbol][i].h + "</td>" + "<td>" + result[symbol][i].l + "</td>"+
-                  "<td>" + result[symbol][i].c + "</td></tr>";
-          x++;
-          var graphdata1 = {
-            linecolor: "#CCA300",
-            title: "Openprice",
-            values: openprice
-          };
-
-          var graphdata2 = {
-            linecolor: "#00CC66",
-            title: "Highprice",
-            values: highPrice
-          };
-          var graphdata3 = {
-            linecolor: "#FF99CC",
-            title: "Lowprice",
-            values: lowprice
-          };
-          var graphdata4 = {
-            linecolor: "#1055AA",
-            title: "Closeprice",
-            values: closeprice
-          };
-        }
-
-
-        $("#container-pricing").empty();
-        $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span> <button onclick="acheterAction(\''+symbol+'\','+
-                lastprice.c+')">Acheter</button><div id="Pricing"></div>');
-        $("#container-pricing").append('<div id="pricingdata"><table id="tablepricingdata"></table></div>');
-        $("#Pricing").SimpleChart({
-          ChartType: "Line",
-          toolwidth: "50",
-          toolheight: "25",
-          axiscolor: "#E6E6E6",
-          textcolor: "#6E6E6E",
-          showlegends: false,
-          data: [graphdata4, graphdata3, graphdata2, graphdata1],
-          legendsize: "140",
-          legendposition: 'bottom',
-          xaxislabel: 'Day',
-          title: 'Evolution of price of ' +symbol,
-          yaxislabel: 'Pricing'
-        });
-
-
-        $("#tablepricingdata").append(html);
-        $("#price").append(lastprice.c+"$");
-        $("#tablepricingdata").DataTable();
-      }
-    });
-
-  }
 
   function acheterAction(symbol,price) {
     console.log(symbol+" : "+price);
+
+    var settings = {
+      "url": "http://localhost:3000/stocks",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({"name":"","symbol":symbol,"price":price}),
+    };
+
+    personne.solde-=price;
+    personne.depense+=price;
+
+    var settingsPersonne = {
+      "url": "http://localhost:3000/personnes",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify(personne),
+    };
+
+    $.ajax(settings).done(function (response) {
+
+      $.ajax(settingsPersonne).done(function (response) {
+
+        console.log("ok");
+        console.log(response);
+
+        setPersonne();
+        setStocks();
+        setPortofolio();
+      });
+
+    });
   }
 
 </script>

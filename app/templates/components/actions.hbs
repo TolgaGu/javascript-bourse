@@ -1,0 +1,36 @@
+<br><br><br>
+<div style="left: 300px; width:70%; position: absolute">
+
+  <table id="my-actions-datatable"></table>
+  <br><br><br>
+  <div id="container-pricing">
+  </div>
+</div>
+<script>
+
+  function sethtmlmyaction() {
+
+    let actions = " <thead>\n" +
+            "    <tr>\n" +
+            "      <th>id</th>\n" +
+            "      <th>symbol</th>\n" +
+            "      <th>price</th>\n" +
+            "      <th>sell</th>\n" +
+            "\n" +
+            "    </tr>\n" +
+            "    </thead>";
+
+    for (let i = 0;i<listStock.length;i++){
+      actions+="<tr onclick='getPricing(\"" + listStock[i].symbol + "\")''><td>"+listStock[i]._id+"</td>"+"<td>"+listStock[i].symbol+"</td>"+"<td>$"+listStock[i].price+"</td>"+
+              "<td><button onclick=\"sellAction()\">Sell</button></td></tr>"
+    }
+    document.getElementById("my-actions-datatable").innerHTML=actions;
+
+    $("#my-actions-datatable").DataTable();
+  }
+  sethtmlmyaction();
+  function sellAction() {
+
+  }
+</script>
+{{yield}}

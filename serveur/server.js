@@ -152,7 +152,7 @@ app.route('/stocks')
       if (err) {
         return next(err)
       }
-      response.json(stock);
+      response.json(request.body);
     })
   });
 // find my symbol dans la bdd

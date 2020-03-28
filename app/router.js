@@ -14,3 +14,8 @@ Router.map(function() {
 Router.map(function() {
   this.route('my-actions',{path :"/my-actions"});
 });
+
+Router.map(function() {
+  this.route('index',{path :"/"});
+});
+
