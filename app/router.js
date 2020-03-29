@@ -12,7 +12,7 @@ Router.map(function() {
 
 
 Router.map(function() {
-  this.route('my-actions',{path :"/my-actions"});
+  this.route('my-actions');
 });
 
 Router.map(function() {
