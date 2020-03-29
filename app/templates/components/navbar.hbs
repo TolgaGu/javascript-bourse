@@ -31,7 +31,7 @@
               <span class="prfil-img"><img src="assets/images/3.jpg" alt="user"> </span>
               <div class="user-name">
                 <p id="personename"></p>
-                <span>Administrator</span>
+                <span>User</span>
               </div>
               <i class="fa fa-angle-down lnr"></i>
               <i class="fa fa-angle-up lnr"></i>
@@ -82,7 +82,7 @@
       async: false,
       success: function (result) {
         evolutionPersonne=result;
-        
+
         personne.name = result[result.length-1].name;
         personne.solde = result[result.length-1].solde;
         personne.nbactionpossede = result[result.length-1].nbactionpossede;

@@ -130,11 +130,12 @@
         $("#container-pricing").empty();
         if(forselling){
 
-          console.log("forsell");
-          console.log(lastprice);
+          let benefice = lastprice.h-prixdachat;
+          benefice =  Math.round(benefice * 100) / 100;
+
           $("#container-pricing").append('<p>' + symbol + ' : <span id="price"></span>'+
                   ' <button onclick="acheterOuVendreAction(\''+symbol+'\','+lastprice.h+',true,\''+idaction+'\','+prixdachat+')">'+
-                  'Vendre</button><div id="Pricing"></div>');
+                  'Vendre</button>  Bénéfice :'+benefice+' <div id="Pricing"></div>');
           $("#price").append(lastprice.h+"$");
         }else{
 
