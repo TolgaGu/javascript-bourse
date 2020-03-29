@@ -29,7 +29,7 @@ let PersonneSchema = new mongoose.Schema({
 let Personne = mongoose.model('Personne',PersonneSchema);
 
 
-/*
+
 let p = new Personne({
   name: "Kebab",
   solde : 10000,
@@ -39,9 +39,9 @@ let p = new Personne({
   revenu : 0
 });
 p.save();
-*/
+
 let Stock = mongoose.model('Stock', StockSchema);
-/*let s = new Stock({
+let s = new Stock({
    name : "Apple",
    symbol: "AAPL",
    price: 100.10
@@ -49,7 +49,7 @@ let Stock = mongoose.model('Stock', StockSchema);
 
 
 s.save();
-*/
+
 let app = express();
 
 app.use(bodyParser.json());
