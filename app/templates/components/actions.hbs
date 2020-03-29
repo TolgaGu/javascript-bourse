@@ -1,13 +1,82 @@
-
 <div style="left: 300px; width:70%; position: absolute">
+  <h1>Portefeuille</h1>
+  <label>Se créditer<input type="number" id="credit"></label>
+  <button onclick="crediter()">Créditer</button>
+  <label>Se Débiter<input type="number" id="debit"></label>
+  <button onclick="debiter()">Débiter</button>
+  <br><br><br><br>
   <h1>My actions</h1>
   <br>
-  <table id="my-actions-datatable"></table>
+  <table id="my-actions-datatable" class="display"></table>
   <br><br><br>
   <div id="container-pricing">
   </div>
 </div>
 <script>
+
+  function crediter() {
+
+    let credit = document.getElementById("credit").value;
+    if (credit) {
+
+      personne.solde += parseFloat(credit);
+
+
+      console.log(personne.solde);
+
+      var settingsPersonne = {
+        "url": "http://localhost:3000/personnes",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify(personne),
+      };
+
+
+      $.ajax(settingsPersonne).done(function (response) {
+        setPersonne();
+        setStocks();
+        setPortofolio();
+      });
+    } else {
+      alert("Veuillez saisir une valeur");
+    }
+
+  }
+
+  function debiter() {
+
+    let debit = document.getElementById("debit").value;
+    if (debit) {
+
+      personne.solde -= parseFloat(debit);
+
+
+      console.log(personne.solde);
+
+      var settingsPersonne = {
+        "url": "http://localhost:3000/personnes",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "data": JSON.stringify(personne),
+      };
+
+
+      $.ajax(settingsPersonne).done(function (response) {
+        setPersonne();
+        setStocks();
+        setPortofolio();
+      });
+    } else {
+      alert("Veuillez saisir une valeur");
+    }
+  }
+
 
   function sethtmlmyaction() {
 
@@ -21,14 +90,15 @@
             "    </tr>\n" +
             "    </thead>";
 
-    for (let i = 0;i<listStock.length;i++){
-      actions+="<tr onclick='getPricing(\"" + listStock[i].symbol + "\",true,\""+listStock[i]._id+"\","+listStock[i].price+")'><td>"+listStock[i]._id+"</td>"+"<td>"+listStock[i].symbol+"</td>"+"<td>$"+listStock[i].price+"</td>"+
+    for (let i = 0; i < listStock.length; i++) {
+      actions += "<tr onclick='getPricing(\"" + listStock[i].symbol + "\",true,\"" + listStock[i]._id + "\"," + listStock[i].price + ")'><td>" + listStock[i]._id + "</td>" + "<td>" + listStock[i].symbol + "</td>" + "<td>$" + listStock[i].price + "</td>" +
               "<td><button>Check</button></td></tr>"
     }
-    document.getElementById("my-actions-datatable").innerHTML=actions;
+    document.getElementById("my-actions-datatable").innerHTML = actions;
 
     $("#my-actions-datatable").DataTable();
   }
+
   sethtmlmyaction();
 </script>
 {{yield}}
