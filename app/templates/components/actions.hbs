@@ -14,15 +14,15 @@
             "    <tr>\n" +
             "      <th>id</th>\n" +
             "      <th>symbol</th>\n" +
-            "      <th>price</th>\n" +
-            "      <th>sell</th>\n" +
+            "      <th>prix d'achat</th>\n" +
+            "      <th>Check</th>\n" +
             "\n" +
             "    </tr>\n" +
             "    </thead>";
 
     for (let i = 0;i<listStock.length;i++){
       actions+="<tr onclick='getPricing(\"" + listStock[i].symbol + "\",true,\""+listStock[i]._id+"\","+listStock[i].price+")'><td>"+listStock[i]._id+"</td>"+"<td>"+listStock[i].symbol+"</td>"+"<td>$"+listStock[i].price+"</td>"+
-              "<td><button onclick=\"sellAction()\">Sell</button></td></tr>"
+              "<td><button onclick=\"sellAction()\">Check</button></td></tr>"
     }
     document.getElementById("my-actions-datatable").innerHTML=actions;
 

@@ -73,7 +73,7 @@ app.get("/alpaca", (request, response) => {
       if (res.error) throw new Error(res.error);
       result += JSON.stringify(res.body);
 
-      var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/EWRE')
+      var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/FB')
         .headers({
           'APCA-API-KEY-ID': 'PKILT53XG8Q2IU7VPJG9',
           'APCA-API-SECRET-KEY': 'IblZbwglL09mRQOHV1GNjY5xZe7cyOt9gDPJC9Eo'
@@ -82,7 +82,7 @@ app.get("/alpaca", (request, response) => {
           if (res.error) throw new Error(res.error);
           result +=","+JSON.stringify(res.body);
 
-          var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/CDOR')
+          var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/MSFT')
             .headers({
               'APCA-API-KEY-ID': 'PKILT53XG8Q2IU7VPJG9',
               'APCA-API-SECRET-KEY': 'IblZbwglL09mRQOHV1GNjY5xZe7cyOt9gDPJC9Eo'
@@ -92,7 +92,7 @@ app.get("/alpaca", (request, response) => {
               result +=","+JSON.stringify(res.body);
 
 
-              var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/FLIR')
+              var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/AMZN')
                 .headers({
                   'APCA-API-KEY-ID': 'PKILT53XG8Q2IU7VPJG9',
                   'APCA-API-SECRET-KEY': 'IblZbwglL09mRQOHV1GNjY5xZe7cyOt9gDPJC9Eo'
@@ -100,9 +100,30 @@ app.get("/alpaca", (request, response) => {
                 .end(function (res) {
                   if (res.error) throw new Error(res.error);
                   result +=","+JSON.stringify(res.body);
-                  result+="]";
-                  response.json(JSON.parse(result));
 
+                  var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/AVUV')
+                    .headers({
+                      'APCA-API-KEY-ID': 'PKILT53XG8Q2IU7VPJG9',
+                      'APCA-API-SECRET-KEY': 'IblZbwglL09mRQOHV1GNjY5xZe7cyOt9gDPJC9Eo'
+                    })
+                    .end(function (res) {
+                      if (res.error) throw new Error(res.error);
+                      result +=","+JSON.stringify(res.body);
+
+                      var req = unirest('GET', 'https://paper-api.alpaca.markets/v2/assets/GOOGL')
+                        .headers({
+                          'APCA-API-KEY-ID': 'PKILT53XG8Q2IU7VPJG9',
+                          'APCA-API-SECRET-KEY': 'IblZbwglL09mRQOHV1GNjY5xZe7cyOt9gDPJC9Eo'
+                        })
+                        .end(function (res) {
+                          if (res.error) throw new Error(res.error);
+                          result +=","+JSON.stringify(res.body);
+                          result+="]";
+                          response.json(JSON.parse(result));
+
+                        })
+
+                    })
                 })
             })
         })
@@ -199,5 +220,35 @@ app.use(express.static("./public"));
 
 
 app.listen(3000);
-console.log("wesh alors !");
+
+console.log("It's running !!\n" +
+  "     _..--\"\\  `|`\"\"--.._\n" +
+  "  .-'       \\  |        `'-.\n" +
+  " /           \\_|___...----'`\\\n" +
+  "|__,,..--\"\"``(_)--..__      |\n" +
+  "'\\     _.--'`.I._     ''--..'\n" +
+  "  `''\"`,#JGS/_|_\\###,---'`\n" +
+  "    ,#'  _.:`___`:-._ '#,\n" +
+  "   #'  ,~'-;(oIo);-'~, '#\n" +
+  "   #   `~-(  |    )=~`  #\n" +
+  "   #       | |_  |      #\n" +
+  "   #       ; ._. ;      #\n" +
+  "   #  _..-;|\\ - /|;-._  #\n" +
+  "   #-'   /_ \\\\_// _\\  '-#\n" +
+  " /`#    ; /__\\-'__\\;    #`\\\n" +
+  ";  #\\.--|  |O  O   |'-./#  ;\n" +
+  "|__#/   \\ _;O__O___/   \\#__|\n" +
+  " | #\\    [I_[_]__I]    /# |\n" +
+  " \\_(#   /  |O  O   \\   #)_/\n" +
+  "       /   |        \\\n" +
+  "      /    |         \\\n" +
+  "     /    /\\          \\\n" +
+  "    /     | `\\         ;\n" +
+  "   ;      \\   '.       |\n" +
+  "    \\-._.__\\     \\_..-'/\n" +
+  "     '.\\  \\-.._.-/  /'`\n" +
+  "        \\_.\\    /._/\n" +
+  "         \\_.;  ;._/\n" +
+  "       .-'-./  \\.-'-.\n" +
+  "      (___.'    '.___)");
 

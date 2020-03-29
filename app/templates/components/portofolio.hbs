@@ -58,10 +58,10 @@
   function setPortofolio() {
 
     document.getElementById("personneactions").innerText = listStock.length;
-    document.getElementById("personnesolde").innerText = "$" + personne.solde;
-    document.getElementById("personnerevenue").innerText = "$" + personne.revenu;
+    document.getElementById("personnesolde").innerText = "$" + Math.round(personne.solde * 100) / 100;
+    document.getElementById("personnerevenue").innerText = "$" + Math.round(personne.revenu * 100) / 100;
     document.getElementById("personneactionsvendu").innerText = personne.nbactionvendu;
-    document.getElementById("personnedepense").innerText = "$" + personne.depense;
+    document.getElementById("personnedepense").innerText = "$" + Math.round(personne.depense * 100) / 100;
   }
   setPortofolio();
   //console.log(personne);
@@ -214,13 +214,10 @@
     $.ajax(settings).done(function (response) {
 
       $.ajax(settingsPersonne).done(function (response) {
-
-        console.log("ok");
-        console.log(response);
-
         setPersonne();
         setStocks();
         setPortofolio();
+        document.location.reload(true);
       });
 
     });

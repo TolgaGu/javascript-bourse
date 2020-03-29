@@ -60,6 +60,7 @@
   }();
 
 
+  let evolutionPersonne = [];
   let listStock = [];
 
   function setStocks(){
@@ -80,6 +81,8 @@
       url: "http://localhost:3000/personnes",
       async: false,
       success: function (result) {
+        evolutionPersonne=result;
+        
         personne.name = result[result.length-1].name;
         personne.solde = result[result.length-1].solde;
         personne.nbactionpossede = result[result.length-1].nbactionpossede;
